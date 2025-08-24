@@ -680,6 +680,7 @@
       "type": "stat"
     },
     {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -687,54 +688,27 @@
         "y": 6
       },
       "id": 23,
+      "panels": [],
       "title": "Basics",
       "type": "row"
     },
     {
       "datasource": {
-        "datasource": "Prometheus",
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
           },
-          "decimals": 0,
-          "links": [],
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -747,10 +721,34 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "percent"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^(?!(Time|pod)$).*"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 233
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -758,42 +756,41 @@
         "x": 0,
         "y": 7
       },
-      "id": 6,
+      "id": 35,
       "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "last"
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
           ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "sortBy": "Name",
-          "sortDesc": false
+          "show": false
         },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
+        "showHeader": true,
+        "sortBy": []
       },
-      "pluginVersion": "10.3.0-63516",
+      "pluginVersion": "9.1.4",
       "targets": [
         {
           "datasource": {
             "datasource": "Prometheus",
             "type": "prometheus"
           },
-          "editorMode": "builder",
-          "expr": "DCGM_FI_DEV_GPU_UTIL{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
-          "interval": "",
-          "legendFormat": "GPU {{gpu}}",
-          "range": true,
-          "refId": "A"
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "DCGM_FI_DEV_GPU_UTIL{instance=~\"$instance\", gpu=~\"$gpu\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
         }
       ],
-      "title": "GPU Utilization",
-      "type": "timeseries"
+      "title": "Pods",
+      "type": "table"
     },
     {
       "datasource": {
@@ -930,7 +927,6 @@
         "datasource": "Prometheus",
         "type": "prometheus"
       },
-      "description": "显存带宽利用率",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -992,6 +988,112 @@
         "h": 8,
         "w": 12,
         "x": 0,
+        "y": 15
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "10.3.0-63516",
+      "targets": [
+        {
+          "datasource": {
+            "datasource": "Prometheus",
+            "type": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "DCGM_FI_DEV_GPU_UTIL{instance=~\"${instance}\", gpu=~\"${gpu}\"}",
+          "interval": "",
+          "legendFormat": "GPU {{gpu}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "GPU Utilization",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "datasource": "Prometheus",
+        "type": "prometheus"
+      },
+      "description": "显存带宽利用率",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "links": [],
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
         "y": 15
       },
       "id": 20,
@@ -1786,8 +1888,8 @@
       {
         "current": {
           "selected": false,
-          "text": "10.233.68.170:9400",
-          "value": "10.233.68.170:9400"
+          "text": "10.233.72.7:9400",
+          "value": "10.233.72.7:9400"
         },
         "datasource": {
           "type": "prometheus",
@@ -1814,9 +1916,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "prometheus",
@@ -1864,6 +1970,6 @@
   "timezone": "",
   "title": "GPU with Linux Server",
   "uid": "Oxed_c6Wz",
-  "version": 11,
+  "version": 3,
   "weekStart": ""
 }
